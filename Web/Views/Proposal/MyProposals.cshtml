@@ -1,0 +1,49 @@
+﻿@using FreelancePlatform.Web.ViewModels
+@using FreelancePlatform.Domain.Enums
+@using FreelancePlatform.Domain.Entities
+@using Microsoft.AspNetCore.Mvc.RazorPages
+@model IEnumerable<Offer>
+@if (Model != null && Model.Any())
+{
+    <h4>Proposals (@Model.Count())</h4>
+    <div class="list-group">
+        @foreach (var proposal in Model)
+        {
+            <div class="list-group-item mb-2">
+                <div class="d-flex justify-content-between">
+                    <h5>@(proposal.Freelancer?.Username ?? "Unknown Freelancer")</h5>
+                    @if (proposal.Status != null)
+                    {
+                        <span class="badge bg-@(proposal.Status == OfferStatus.Accepted ? "success" :
+                                              proposal.Status == OfferStatus.Rejected ? "danger" : "warning")">
+                            @proposal.Status
+                        </span>
+                    }
+                </div>
+                @if (!string.IsNullOrEmpty(proposal.CoverLetter))
+                {
+                    <p>@proposal.CoverLetter</p>
+                }
+                <p><strong>Bid Amount:</strong> $@proposal.BidAmount</p>
+
+                @if (proposal.Status == OfferStatus.Pending)
+                {
+                    <div class="btn-group">
+                        <form asp-controller="Proposal" asp-action="Accept" method="post">
+                            <input type="hidden" name="proposalId" value="@proposal.Id" />
+                            <button type="submit" class="btn btn-sm btn-success">Accept</button>
+                        </form>
+                        <form asp-controller="Proposal" asp-action="Reject" method="post">
+                            <input type="hidden" name="proposalId" value="@proposal.Id" />
+                            <button type="submit" class="btn btn-sm btn-danger">Reject</button>
+                        </form>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+}
+else if (Model != null)
+{
+    <div class="alert alert-info">No proposals submitted yet.</div>
+}

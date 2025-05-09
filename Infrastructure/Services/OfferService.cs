@@ -104,8 +104,18 @@ namespace FreelancePlatform.Application.Services
 
         public async Task<IEnumerable<Offer>> GetProposalsByFreelancerAsync(int freelancerId)
         {
-            return await _proposalRepository.GetProposalsByFreelancerAsync(freelancerId);
+ try
+    {
+        var proposals = await _proposalRepository.GetProposalsByFreelancerAsync(freelancerId);
+        return proposals?.Where(p => p != null) ?? Enumerable.Empty<Offer>();
+    }
+    catch (Exception ex)
+    {
+        // Log the exception (if you have a logging mechanism)
+        return Enumerable.Empty<Offer>();
+    }
         }
+
 
         public async Task<Offer> GetByIdAsync(int id)
         {

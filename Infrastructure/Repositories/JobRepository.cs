@@ -20,13 +20,14 @@ namespace FreelancePlatform.Infrastructure.Repositories
         }
 
         public async Task<Job> GetByIdAsync(int id)
-        {
-            return await _context.Jobs
-                .Include(j => j.Client)
-                .Include(j => j.Proposals)
-                .ThenInclude(p => p.Freelancer)
-                .FirstOrDefaultAsync(j => j.Id == id);
-        }
+{
+    return await _context.Jobs
+        .Include(j => j.Client)
+        .Include(j => j.Proposals)
+            .ThenInclude(p => p.Freelancer)
+        .FirstOrDefaultAsync(j => j.Id == id) 
+        ?? throw new InvalidOperationException($"Job with ID {id} not found.");
+}
 
         public async Task<IEnumerable<Job>> GetAllAsync()
         {

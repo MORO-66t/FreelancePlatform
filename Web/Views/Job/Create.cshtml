@@ -36,12 +36,12 @@
                 <span asp-validation-for="Deadline" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="RequiredSkills"></label>
-                <input asp-for="RequiredSkills" class="form-control" />
-                <small class="form-text text-muted">Separate skills with commas (e.g., C#, ASP.NET, JavaScript)</small>
-                <span asp-validation-for="RequiredSkills" class="text-danger"></span>
-            </div>
+            <div class="mb-3">
+    <label asp-for="RequiredSkills" class="form-label"></label>
+    <input asp-for="RequiredSkills" class="form-control" placeholder="e.g., C#, JavaScript, HTML" />
+    <span asp-validation-for="RequiredSkills" class="text-danger"></span>
+    <small class="form-text text-muted">Separate multiple skills with commas</small>
+</div>
 
             <button type="submit" class="btn btn-primary">Post Job</button>
         </form>

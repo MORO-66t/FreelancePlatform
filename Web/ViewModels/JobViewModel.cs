@@ -30,8 +30,9 @@ namespace FreelancePlatform.Web.ViewModels;
         [Display(Name = "Deadline")]
         public DateTime Deadline { get; set; }
 
-        [Display(Name = "Skills Required (comma separated)")]
-        public string? RequiredSkills { get; set; }
+        [Required(ErrorMessage = "Please specify at least one required skill")]
+    [Display(Name = "Required Skills (comma separated)")]
+    public string RequiredSkills { get; set; } = string.Empty;
     }
 
     public class JobDetailsViewModel

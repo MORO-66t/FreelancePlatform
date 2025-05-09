@@ -9,8 +9,14 @@ using FreelancePlatform.Domain.Enums;
 using FreelancePlatform.Domain.Exceptions;
 using FreelancePlatform.Infrastructure.Services;
 using static FreelancePlatform.Application.Dtos.OfferDto;
-
+using FreelancePlatform.Application.Common.Interfaces;
+using FreelancePlatform.Domain.Entities;
 namespace FreelancePlatform.Web.Controllers;
+using FreelancePlatform.Application.Common.Interfaces;
+using FreelancePlatform.Application.Services;
+using FreelancePlatform.Domain.Entities;
+using FreelancePlatform.Domain.Enums;
+using FreelancePlatform.Domain.Exceptions;
 
 
 [Authorize]
@@ -113,10 +119,29 @@ public class ProposalController : Controller
     }
 
     [HttpGet]
-    [Authorize(Roles = "Freelancer")]
-    public async Task<IActionResult> MyProposals()
+[Authorize(Roles = "Freelancer")]
+public async Task<IActionResult> MyProposals()
+{
+    try
     {
-        var proposals = await _proposalService.GetProposalsByFreelancerAsync(_currentUserService.UserId.Value);
-        return View(proposals);
+        var userId = _currentUserService.UserId;
+        if (userId == null)
+        {
+            return RedirectToAction("Login", "Account");
+        }
+
+        var proposals = await _proposalService.GetProposalsByFreelancerAsync(userId.Value);
+        return View(proposals ?? new List<Offer>());
     }
+    // catch (Exception ex)
+    // {
+    //     _logger.LogError(ex, "Error loading proposals");
+    //     return View(new List<Offer>());
+    // }
+    catch (AppException ex)
+    {
+        TempData["ErrorMessage"] = ex.Message;
+        return RedirectToAction("Index", "Home");
+    }
+}
 }

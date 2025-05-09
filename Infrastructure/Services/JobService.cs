@@ -2,9 +2,10 @@ using FreelancePlatform.Application.Common.Interfaces;
 //using FreelancePlatform.Application.Dtos;
 using FreelancePlatform.Domain.Entities;
 using FreelancePlatform.Domain.Enums;
-using FreelancePlatform.Infrastructure.Dtos;
+// using FreelancePlatform.Infrastructure.Dtos;
 
-
+using FreelancePlatform.Application.Dtos;
+// using FreelancePlatform.Application.Common.Interfaces;
 
 // FreelancePlatform.Application/Services/JobService.cs
 
@@ -48,7 +49,7 @@ public class JobService : IJobService
                 Deadline = jobDto.Deadline,
                 ClientId = clientId,
                 Status = JobStatus.Open,
-                //RequiredSkills = jobDto.RequiredSkills,
+                RequiredSkills = jobDto.RequiredSkills ?? string.Empty, 
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -61,10 +62,11 @@ public class JobService : IJobService
             return await _jobRepository.GetJobsByStatusAsync(JobStatus.Open);
         }
 
-        public async Task<Job> GetJobByIdAsync(int id)
-        {
-            return await _jobRepository.GetByIdAsync(id);
-        }
+       public async Task<Job> GetJobByIdAsync(int id)
+{
+    return await _jobRepository.GetByIdAsync(id) 
+           ?? throw new KeyNotFoundException($"Job with ID {id} not found");
+}
 
         public async Task<IEnumerable<Job>> GetJobsByClientAsync(int clientId)
         {

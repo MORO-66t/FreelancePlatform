@@ -66,11 +66,12 @@ namespace FreelancePlatform.Infrastructure.Repositories
 
         public async Task<IEnumerable<Offer>> GetProposalsByFreelancerAsync(int freelancerId)
         {
-            return await _context.Proposals
-                .Where(p => p.FreelancerId == freelancerId)
-                .Include(p => p.Job)
-                .ThenInclude(j => j.Client)
-                .ToListAsync();
+             return await _context.Proposals
+        .Where(p => p.FreelancerId == freelancerId)
+        .Include(p => p.Job)
+            .ThenInclude(j => j.Client)
+        .AsNoTracking()
+        .ToListAsync() ?? new List<Offer>();
         }
 
         //public async Task AcceptProposalAsync(int proposalId)
