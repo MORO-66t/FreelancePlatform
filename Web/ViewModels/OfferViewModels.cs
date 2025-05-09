@@ -18,5 +18,7 @@ namespace FreelancePlatform.Web.ViewModels
         [StringLength(1000, MinimumLength = 20)]
         [Display(Name = "Cover Letter")]
         public string CoverLetter { get; set; }
+
+         public DateTime EstimatedCompletionTime { get; set; }
     }
 }

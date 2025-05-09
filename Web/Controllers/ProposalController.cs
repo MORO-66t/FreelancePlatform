@@ -37,7 +37,7 @@ public class ProposalController : Controller
     }
 
     [HttpGet]
-    [Authorize(Roles = "Freelancer")]
+    // [Authorize(Roles = "Freelancer")]
     public async Task<IActionResult> Create(int jobId)
     {
         var job = await _jobService.GetJobByIdAsync(jobId);
@@ -56,7 +56,7 @@ public class ProposalController : Controller
     }
 
     [HttpPost]
-    [Authorize(Roles = "Freelancer")]
+    // [Authorize(Roles = "Freelancer")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(OfferViewModel model)
     {

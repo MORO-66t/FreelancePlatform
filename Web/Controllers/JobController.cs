@@ -7,9 +7,13 @@ using FreelancePlatform.Application.Dtos;
 using FreelancePlatform.Application.Common.Interfaces;
 using FreelancePlatform.Application.Services;
 using System.Security.Claims;
+using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using FreelancePlatform.Infrastructure.Data;
 // using FreelancePlatform.Web.ViewModels;
 // FreelancePlatform.Web/Controllers/JobController.cs
-
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using FreelancePlatform.Domain.Enums;
 using FreelancePlatform.Domain.Entities;
 
@@ -22,17 +26,19 @@ namespace FreelancePlatform.Web.Controllers
         private readonly IOfferService _proposalService;
         private readonly ICurrentUserService _currentUserService;
         private readonly ILogger<JobController> _logger;
+        private readonly AppDbContext _context;
 
         public JobController(
             IJobService jobService,
             ICurrentUserService currentUserService,
-            ILogger<JobController> logger,
-            IOfferService proposalService)
+            IOfferService proposalService,
+            AppDbContext context,
+            ILogger<JobController> logger)
         {
             _jobService = jobService;
-            _currentUserService = currentUserService;
-            _logger = logger;
             _proposalService = proposalService;
+            _context = context;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -100,11 +106,28 @@ public async Task<IActionResult> Details(int id)
 }
 
         [HttpGet]
-        public async Task<IActionResult> MyJobs()
-        {
-            var jobs = await _jobService.GetJobsByClientAsync(_currentUserService.UserId.Value);
-            return View(jobs);
-        }
+    public async Task<IActionResult> MyJobs()
+    {
+        var currentUserId = _currentUserService.UserId.Value;
+        
+        var jobs = await _context.Jobs
+            .Include(j => j.Proposals)
+            .Where(j => j.ClientId == currentUserId)
+            .OrderByDescending(j => j.CreatedAt)
+            .Select(j => new JobViewModel
+            {
+                Id = j.Id,
+                Title = j.Title,
+                // Status = j.Status,
+                Budget = j.Budget,
+                // CreatedAt = j.CreatedAt,
+                Deadline = j.Deadline,
+                // ProposalCount = j.Proposals.Count
+            })
+            .ToListAsync();
+
+        return View(jobs);
+    }
 
         [HttpGet]
         public async Task<IActionResult> Browse()

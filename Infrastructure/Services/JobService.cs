@@ -35,27 +35,36 @@ public class JobService : IJobService
             _userRepository = userRepository;
         }
 
-        public async Task<Job> CreateJobAsync(JobDto jobDto, int clientId)
-        {
-            var client = await _userRepository.GetByIdAsync(clientId);
-            if (client == null || client.Type != UserType.Client)
-                throw new Exception("Invalid client");
+        // In JobService.cs
+public async Task<Job> CreateJobAsync(JobDto jobDto, int clientId)
+{
+    var client = await _userRepository.GetByIdAsync(clientId);
+    
+    if (client == null)
+    {
+        throw new ArgumentException("User not found", nameof(clientId));
+    }
+    
+    if (client.Type != UserType.Client)
+    {
+        throw new UnauthorizedAccessException("Only clients can post jobs");
+    }
 
-            var job = new Job
-            {
-                Title = jobDto.Title,
-                Description = jobDto.Description,
-                Budget = jobDto.Budget,
-                Deadline = jobDto.Deadline,
-                ClientId = clientId,
-                Status = JobStatus.Open,
-                RequiredSkills = jobDto.RequiredSkills ?? string.Empty, 
-                CreatedAt = DateTime.UtcNow
-            };
+    var job = new Job
+    {
+        Title = jobDto.Title,
+        Description = jobDto.Description,
+        Budget = jobDto.Budget,
+        Deadline = jobDto.Deadline,
+        ClientId = clientId,
+        Status = JobStatus.Open,
+        RequiredSkills = jobDto.RequiredSkills ?? "General",
+        CreatedAt = DateTime.UtcNow
+    };
 
-            await _jobRepository.AddAsync(job);
-            return job;
-        }
+    await _jobRepository.AddAsync(job);
+    return job;
+}
 
         public async Task<IEnumerable<Job>> GetOpenJobsAsync()
         {

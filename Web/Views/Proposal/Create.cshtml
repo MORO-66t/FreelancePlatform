@@ -1,0 +1,44 @@
+@using FreelancePlatform.Web.ViewModels
+@using FreelancePlatform.Domain.Enums
+@model OfferViewModel
+
+@{
+    ViewData["Title"] = "Submit Proposal";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h2>@ViewData["Title"]</h2>
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="JobId" />
+
+            <div class="form-group">
+                <label asp-for="BidAmount"></label>
+                <input asp-for="BidAmount" class="form-control" />
+                <span asp-validation-for="BidAmount" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CoverLetter"></label>
+                <textarea asp-for="CoverLetter" class="form-control" rows="8"></textarea>
+                <span asp-validation-for="CoverLetter" class="text-danger"></span>
+            </div>
+
+            @* <div class="form-group">
+                <label asp-for="EstimatedCompletionTime"></label>
+                <input asp-for="EstimatedCompletionTime" class="form-control" type="date" />
+                <span asp-validation-for="EstimatedCompletionTime" class="text-danger"></span>
+            </div> *@
+
+            <button type="submit" class="btn btn-primary">Submit Proposal</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

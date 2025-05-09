@@ -1,0 +1,71 @@
+@using FreelancePlatform.Domain.Enums
+@using FreelancePlatform.Web.ViewModels
+@* @using FreelancePlatform.Web.Helpers *@
+@using Microsoft.AspNetCore.Identity
+@model List<JobViewModel>
+
+@{
+    ViewData["Title"] = "My Posted Jobs";
+}
+
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+    
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Budget</th>
+                    <th>Created</th>
+                    <th>Deadline</th>
+                    <th>Proposals</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var job in Model)
+                {
+                    <tr>
+                        <td>@job.Title</td>
+                        <td>
+                            <span class="badge @GetStatusBadgeClass(job.Status)">
+                                @job.Status
+                            </span>
+                        </td>
+                        <td>@job.Budget.ToString("C")</td>
+                        <td>@job.CreatedAt.ToString("d")</td>
+                        <td>@job.Deadline.ToString("d")</td>
+                        <td>
+                            <a asp-action="ViewProposals" asp-route-id="@job.Id" 
+                               class="btn btn-sm btn-outline-primary">
+                                @job.ProposalCount
+                            </a>
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@job.Id" class="btn btn-sm btn-info">View</a>
+                            @if (job.Status == JobStatus.Open)
+                            {
+                                <a asp-action="Edit" asp-route-id="@job.Id" class="btn btn-sm btn-warning">Edit</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@functions {
+    string GetStatusBadgeClass(JobStatus status)
+    {
+        return status switch
+        {
+            JobStatus.Open => "badge-success",
+            JobStatus.InProgress => "badge-primary",
+            JobStatus.Completed => "badge-secondary",
+            _ => "badge-light"
+        };
+    }
+}

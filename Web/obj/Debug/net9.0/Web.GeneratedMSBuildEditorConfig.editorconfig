@@ -52,6 +52,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSm9iXERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/FHCAI/FreelancePlatform/Web/Views/Job/MyJobs.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSm9iXE15Sm9icy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/FHCAI/FreelancePlatform/Web/Views/Proposal/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvcG9zYWxcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/FHCAI/FreelancePlatform/Web/Views/Proposal/MyProposals.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvcG9zYWxcTXlQcm9wb3NhbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

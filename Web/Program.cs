@@ -55,6 +55,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LoginPath = "/Account/Login";
         options.AccessDeniedPath = "/Account/AccessDenied";
     });
+
+
 builder.Services.AddControllersWithViews();
 // Add health checks
 
@@ -72,10 +74,25 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseExceptionHandler("/Home/Error");
-app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+
+// app.UseExceptionHandler("/Home/Error");
+// app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
 
 // ... other middleware ...
+// app.Use(async (context, next) =>
+// {
+//     if (context.Request.Path.StartsWithSegments("/Job/Create") &&
+//         !context.User.IsInRole("Client"))
+//     {
+//         context.Response.Redirect("/Account/AccessDenied");
+//         return;
+//     }
+//     await next();
+// });
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
