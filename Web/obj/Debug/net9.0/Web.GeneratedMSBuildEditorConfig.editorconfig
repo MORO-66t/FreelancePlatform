@@ -48,12 +48,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSm9iXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/FHCAI/FreelancePlatform/Web/Views/Offer/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT2ZmZXJcRGV0YWlscy5jc2h0bWw=
+[D:/FHCAI/FreelancePlatform/Web/Views/Job/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSm9iXERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/FHCAI/FreelancePlatform/Web/Views/Offer/MyOffer.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT2ZmZXJcTXlPZmZlci5jc2h0bWw=
+[D:/FHCAI/FreelancePlatform/Web/Views/Job/MyOffer.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSm9iXE15T2ZmZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/FHCAI/FreelancePlatform/Web/Views/Shared/Error.cshtml]
