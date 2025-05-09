@@ -1,0 +1,65 @@
+@model IEnumerable<FreelancePlatform.Domain.Entities.Job>
+@using FreelancePlatform.Domain.Extensions
+@using FreelancePlatform.Domain.Entities;
+@{
+    ViewData["Title"] = "Browse Jobs";
+}
+<style>
+    .skills {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .skills span {
+        margin-right: 5px;
+    }
+    .card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.skills {
+    min-height: 50px;
+}
+</style>
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+    
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            No open jobs available at the moment.
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var job in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">@job.Title</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">
+                                Budget: $@job.Budget | Deadline: @job.Deadline.ToString("d")
+                            </h6>
+                            <p class="card-text">@job.Description.Truncate(100)</p>
+                            <div class="skills mb-2">
+                                @foreach (var skill in job.RequiredSkills.Split(','))
+                                {
+                                    <span class="badge bg-primary me-1">@skill.Trim()</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <a asp-action="Details" asp-route-id="@job.Id" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

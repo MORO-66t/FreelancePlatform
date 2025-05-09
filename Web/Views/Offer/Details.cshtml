@@ -1,0 +1,64 @@
+﻿@page
+@using FreelancePlatform.Web.ViewModels
+@using FreelancePlatform.Domain.Enums
+@model JobDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Job.Title;
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h2>@Model.Job.Title</h2>
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Job Details</h5>
+                <p class="card-text">@Model.Job.Description</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Budget:</strong> $@Model.Job.Budget</li>
+                    <li class="list-group-item"><strong>Deadline:</strong> @Model.Job.Deadline.ToString("d")</li>
+                    @* <li class="list-group-item"><strong>Required Skills:</strong> @Model.Job.RequiredSkills</li> *@
+                    <li class="list-group-item"><strong>Status:</strong> @Model.Job.Status</li>
+                    <li class="list-group-item"><strong>Posted:</strong> @Model.Job.CreatedAt.ToString("g")</li>
+                </ul>
+            </div>
+        </div>
+
+        @if (Model.CanSubmitProposal)
+        {
+            <a asp-controller="Proposal" asp-action="Create" asp-route-jobId="@Model.Job.Id"
+               class="btn btn-success mb-4">Submit Proposal</a>
+        }
+
+        @if (Model.IsClient)
+        {
+            <h4>Proposals (@Model.Proposals.Count())</h4>
+            <div class="list-group">
+                @foreach (var proposal in Model.Proposals)
+                {
+                    <div class="list-group-item">
+                        <h5>@proposal.Freelancer.Username</h5>
+                        <p>@proposal.CoverLetter</p>
+                        <p><strong>Bid Amount:</strong> $@proposal.BidAmount</p>
+                        <p><strong>Status:</strong> @proposal.Status</p>
+
+
+                        @if (proposal.Status == OfferStatus.Pending)
+                        {
+                            <div class="btn-group">
+                                <form asp-controller="Proposal" asp-action="Accept" method="post">
+                                    <input type="hidden" name="proposalId" value="@proposal.Id" />
+                                    <button type="submit" class="btn btn-sm btn-success">Accept</button>
+                                </form>
+                                <form asp-controller="Proposal" asp-action="Reject" method="post">
+                                    <input type="hidden" name="proposalId" value="@proposal.Id" />
+                                    <button type="submit" class="btn btn-sm btn-danger">Reject</button>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

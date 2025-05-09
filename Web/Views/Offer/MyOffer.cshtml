@@ -1,0 +1,49 @@
+﻿@page
+@using FreelancePlatform.Web.ViewModels
+@using FreelancePlatform.Domain.Enums
+@using FreelancePlatform.Domain.Entities
+@using Microsoft.AspNetCore.Mvc.RazorPages
+@model IEnumerable<Offer>
+
+@{
+    ViewData["Title"] = "My Proposals";
+}
+
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <h2>@ViewData["Title"]</h2>
+
+        @if (!Model.Any())
+        {
+            <div class="alert alert-info">
+                You haven't submitted any proposals yet.
+            </div>
+        }
+        else
+        {
+            <div class="list-group">
+                @foreach (var proposal in Model)
+                {
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">@proposal.Job.Title</h5>
+                            <span class="badge badge-@(proposal.Status == OfferStatus.Accepted ? "success" :
+                                                  proposal.Status == OfferStatus.Rejected ? "danger" : "warning")">
+                                @proposal.Status
+                            </span>
+                        </div>
+                        <p class="mb-1">@proposal.CoverLetter</p>
+                        <small>
+                            <strong>Bid Amount:</strong> $@proposal.BidAmount |
+                            <strong>Submitted:</strong> @proposal.SubmittedAt.ToString("g")
+                        </small>
+                        <div class="mt-2">
+                            <a asp-controller="Job" asp-action="Details" asp-route-id="@proposal.JobId"
+                               class="btn btn-sm btn-outline-primary">View Job</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
